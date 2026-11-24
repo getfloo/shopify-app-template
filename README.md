@@ -33,7 +33,7 @@ You need a Shopify Partner account, a development store, and the [Shopify CLI](h
 4. Copy the client ID and secret from your app in the Shopify Dev Dashboard and set them on floo. `SCOPES` must match `scopes` in `shopify.app.toml`:
 
    ```sh
-   floo env set SHOPIFY_API_KEY=<client id>
+   floo env set SHOPIFY_API_KEY --stdin
    floo env set SHOPIFY_API_SECRET --stdin
    floo env set SCOPES=write_products
    floo deploy --rebuild
