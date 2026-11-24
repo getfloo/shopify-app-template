@@ -1,0 +1,25 @@
+[app]
+name = "shopify-app"
+# Shopify signs merchants in and verifies every request itself: the embedded admin
+# sends a session token, and webhooks carry an HMAC signature. floo's sign-in can't
+# sit in front of either, so the app is public and Shopify's checks are the gate.
+access_mode = "public"
+
+[services.web]
+type = "web"
+path = "."
+port = 3000
+ingress = "public"
+# Runs once per deploy before traffic moves; a failure stops the deploy and the
+# previous revision keeps serving.
+migrate_command = "npx prisma migrate deploy"
+
+[services.web.env]
+managed = ["postgres"]
+# From your app in the Shopify Dev Dashboard. Set them with floo env set before the
+# first deploy; the deploy stops and names any that are missing.
+required = ["SHOPIFY_API_KEY", "SHOPIFY_API_SECRET", "SCOPES"]
+
+# Only the default Postgres resource injects the unsuffixed DATABASE_URL.
+[managed.default]
+type = "postgres"
